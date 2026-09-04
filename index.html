@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Moja Modyfikacja</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <div class="container">
+    <!-- Główna zawartość -->
+    <main class="main-content">
+      <div class="mod-header">
+        <img src="https://raw.githubusercontent.com/TWOJ-NICK/NAZWA-REPOZYTORIUM/main/icon.png" alt="Mod Icon" class="mod-icon" onerror="this.src='https://via.placeholder.com/64'">
+        <div>
+          <h1 class="mod-title">Nazwa Twojego Moda</h1>
+          <p class="mod-summary">Krótki opis tego, co robi Twój mod.</p>
+        </div>
+      </div>
+
+      <h2>O modzie</h2>
+      <p>Tutaj wklejasz pełny opis. Możesz dodać obrazki, listy przedmiotów, instrukcję obsługi lub wymagane mody.</p>
+      
+      <h2>Galerii</h2>
+      <p>Dodaj zrzuty ekranu ze swojej gry!</p>
+    </main>
+
+    <!-- Panel boczny (Sidebar) -->
+    <aside class="sidebar">
+      <a id="download-btn" href="#" class="btn-download">Pobierz Mod (.jar)</a>
+
+      <div class="info-group">
+        <div class="info-item">
+          <span class="info-label">Najnowsza wersja:</span>
+          <span id="mod-version" class="info-value">Ładowanie...</span>
+        </div>
+        <div class="info-item">
+          <span class="info-label">Pobrania (.jar):</span>
+          <span id="download-count" class="info-value">Ładowanie...</span>
+        </div>
+        <div class="info-item">
+          <span class="info-label">Licencja:</span>
+          <span class="info-value">MIT</span>
+        </div>
+      </div>
+    </aside>
+  </div>
+
+  <!-- Skrypt automatycznie pobierający dane z GitHub API -->
+  <script>
+    const USER = 'TWOJ-NICK';
+    const REPO = 'NAZWA-REPOZYTORIUM';
+
+    async function fetchReleaseData() {
+      try {
+        const response = await fetch(`https://api.github.com/repos/${USER}/${REPO}/releases/latest`);
+        const data = await response.json();
+
+        if (data.assets && data.assets.length > 0) {
+          // Znajdź plik z rozszerzeniem .jar
+          const jarAsset = data.assets.find(asset => asset.name.endsWith('.jar')) || data.assets[0];
+
+          document.getElementById('download-btn').href = jarAsset.browser_download_url;
+          document.getElementById('mod-version').innerText = data.tag_name;
+          document.getElementById('download-count').innerText = jarAsset.download_count.toLocaleString();
+        } else {
+          document.getElementById('mod-version').innerText = data.tag_name || 'Brak pliku';
+          document.getElementById('download-btn').innerText = 'Zobacz na GitHub';
+          document.getElementById('download-btn').href = data.html_url;
+        }
+      } catch (error) {
+        console.error('Błąd pobierania danych:', error);
+        document.getElementById('mod-version').innerText = 'Błąd API';
+      }
+    }
+
+    fetchReleaseData();
+  </script>
+</body>
+</html>
