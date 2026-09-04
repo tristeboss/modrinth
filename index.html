@@ -3,79 +3,354 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Moja Modyfikacja</title>
-  <link rel="stylesheet" href="style.css">
+  <title>[ETF] Entity Texture Features - Modrinth</title>
+  <style>
+    :root {
+      --bg-dark: #111213;
+      --card-bg: #18191c;
+      --card-bg-subtle: #212328;
+      --border-color: #2b2d32;
+      --text-main: #d1d5db;
+      --text-muted: #9ca3af;
+      --text-white: #ffffff;
+      --brand-green: #1bd96a;
+      --brand-green-hover: #15b758;
+      --tag-bg: #272a30;
+      --badge-bg: #262930;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background-color: var(--bg-dark);
+      color: var(--text-main);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      line-height: 1.5;
+      padding-bottom: 60px;
+    }
+
+    .navbar {
+      background-color: var(--card-bg);
+      border-bottom: 1px solid var(--border-color);
+      padding: 12px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 30px;
+    }
+
+    .nav-brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-weight: 800;
+      font-size: 1.2rem;
+      color: var(--brand-green);
+      text-decoration: none;
+    }
+
+    .nav-links { display: flex; align-items: center; gap: 16px; }
+
+    .nav-item {
+      color: var(--text-muted);
+      text-decoration: none;
+      font-size: 0.9rem;
+      font-weight: 500;
+    }
+
+    .btn-sign-in {
+      background-color: var(--brand-green);
+      color: #000;
+      font-weight: 700;
+      padding: 6px 16px;
+      border-radius: 6px;
+      text-decoration: none;
+      font-size: 0.9rem;
+    }
+
+    .container { max-width: 1180px; margin: 0 auto; padding: 0 20px; }
+
+    .mod-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 24px;
+      gap: 20px;
+    }
+
+    .mod-header-left { display: flex; gap: 20px; align-items: flex-start; }
+
+    .mod-icon {
+      width: 80px;
+      height: 80px;
+      border-radius: 12px;
+      background: linear-gradient(135deg, #e63946, #f1faee, #a8dadc, #457b9d);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 900;
+      font-size: 2rem;
+      color: #111;
+      flex-shrink: 0;
+    }
+
+    .mod-title { font-size: 1.75rem; font-weight: 700; color: var(--text-white); }
+    .mod-subtitle { font-size: 0.95rem; color: var(--text-muted); }
+
+    .mod-stats {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      margin-top: 6px;
+    }
+
+    .stat-tag {
+      background-color: var(--tag-bg);
+      padding: 2px 8px;
+      border-radius: 4px;
+      font-size: 0.75rem;
+      color: #c9d1d9;
+    }
+
+    .mod-header-right { display: flex; align-items: center; gap: 10px; }
+
+    .btn-download-main {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background-color: var(--brand-green);
+      color: #000;
+      font-weight: 700;
+      padding: 10px 24px;
+      border-radius: 8px;
+      text-decoration: none;
+      font-size: 1rem;
+      cursor: pointer;
+    }
+
+    .btn-download-main:hover { background-color: var(--brand-green-hover); }
+
+    .action-icon-btn {
+      background-color: var(--card-bg);
+      border: 1px solid var(--border-color);
+      color: var(--text-muted);
+      width: 40px;
+      height: 40px;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .tabs-bar {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 24px;
+      border-bottom: 1px solid var(--border-color);
+      padding-bottom: 12px;
+    }
+
+    .tab-btn {
+      background-color: transparent;
+      border: none;
+      color: var(--text-muted);
+      font-size: 0.95rem;
+      font-weight: 600;
+      padding: 8px 16px;
+      border-radius: 6px;
+    }
+
+    .tab-btn.active { background-color: #1e2922; color: var(--brand-green); }
+
+    .main-grid {
+      display: grid;
+      grid-template-columns: 1fr 320px;
+      gap: 24px;
+    }
+
+    @media (max-width: 900px) { .main-grid { grid-template-columns: 1fr; } }
+
+    .content-card {
+      background-color: var(--card-bg);
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      padding: 28px;
+    }
+
+    .banner-image {
+      width: 100%;
+      height: 200px;
+      border-radius: 8px;
+      background: #2a2d34;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 24px;
+      border: 1px solid var(--border-color);
+    }
+
+    .sidebar-widget {
+      background-color: var(--card-bg);
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      padding: 20px;
+      margin-bottom: 20px;
+    }
+
+    .widget-title { font-size: 1rem; font-weight: 700; color: var(--text-white); margin-bottom: 16px; }
+
+    .badge-grid { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 12px; }
+
+    .badge {
+      background-color: var(--badge-bg);
+      border: 1px solid var(--border-color);
+      color: #b0b7c3;
+      padding: 3px 8px;
+      border-radius: 6px;
+      font-size: 0.78rem;
+    }
+
+    .badge.platform { background-color: #222938; color: #79a6fb; border-color: #2f3e5c; }
+    .badge.env { background-color: #2a2533; color: #c084fc; border-color: #423254; }
+
+    .download-box {
+      background: #1e2229;
+      border: 1px dashed var(--brand-green);
+      border-radius: 8px;
+      padding: 16px;
+      text-align: center;
+    }
+
+    input[type="file"] { display: none; }
+
+    .custom-file-btn {
+      display: block;
+      width: 100%;
+      padding: 10px;
+      margin-top: 10px;
+      background: var(--tag-bg);
+      border: 1px solid var(--border-color);
+      border-radius: 6px;
+      color: var(--text-main);
+      font-size: 0.85rem;
+      cursor: pointer;
+    }
+
+    .custom-file-btn:hover { background: #323640; }
+  </style>
 </head>
 <body>
 
+  <nav class="navbar">
+    <a href="#" class="nav-brand">modrinth</a>
+    <div class="nav-links">
+      <a href="#" class="nav-item">Discover content</a>
+      <a href="#" class="btn-sign-in">Sign in</a>
+    </div>
+  </nav>
+
   <div class="container">
-    <!-- Główna zawartość -->
-    <main class="main-content">
-      <div class="mod-header">
-        <img src="https://raw.githubusercontent.com/TWOJ-NICK/NAZWA-REPOZYTORIUM/main/icon.png" alt="Mod Icon" class="mod-icon" onerror="this.src='https://via.placeholder.com/64'">
+    
+    <header class="mod-header">
+      <div class="mod-header-left">
+        <div class="mod-icon">ETF</div>
         <div>
-          <h1 class="mod-title">Nazwa Twojego Moda</h1>
-          <p class="mod-summary">Krótki opis tego, co robi Twój mod.</p>
+          <h1 class="mod-title">[ETF] Entity Texture Features</h1>
+          <p class="mod-subtitle">Emissive, Random & Custom texture support for entities in resourcepacks just like Optifine but for Fabric</p>
+          <div class="mod-stats">
+            <span>⚡ <strong>98.1 mln</strong> downloads</span>
+            <span>❤️ <strong>10,3 tys.</strong> followers</span>
+            <span class="stat-tag">Decoration</span>
+            <span class="stat-tag">Utility</span>
+          </div>
         </div>
       </div>
 
-      <h2>O modzie</h2>
-      <p>Tutaj wklejasz pełny opis. Możesz dodać obrazki, listy przedmiotów, instrukcję obsługi lub wymagane mody.</p>
+      <div class="mod-header-right">
+        <a id="main-download-btn" href="#" class="btn-download-main">Download</a>
+        <button class="action-icon-btn">🤍</button>
+        <button class="action-icon-btn">🔖</button>
+      </div>
+    </header>
+
+    <div class="tabs-bar">
+      <button class="tab-btn active">Description</button>
+      <button class="tab-btn">Gallery</button>
+      <button class="tab-btn">Changelog</button>
+      <button class="tab-btn">Versions</button>
+    </div>
+
+    <div class="main-grid">
       
-      <h2>Galerii</h2>
-      <p>Dodaj zrzuty ekranu ze swojej gry!</p>
-    </main>
+      <main class="content-card">
+        <div class="banner-image">
+          <div style="text-align: center; font-size: 2.5rem;">👾 🦊 🐮 🐷<br><span style="font-size: 1.2rem; color:#fff;">Entity Texture Features</span></div>
+        </div>
 
-    <!-- Panel boczny (Sidebar) -->
-    <aside class="sidebar">
-      <a id="download-btn" href="#" class="btn-download">Pobierz Mod (.jar)</a>
+        <h2>About Entity Texture Features</h2>
+        <p>ETF jest modyfikacją pod Fabric, Forge i NeoForge, dodającą wsparcie dla świecących i losowych tekstur mobów!</p>
+      </main>
 
-      <div class="info-group">
-        <div class="info-item">
-          <span class="info-label">Najnowsza wersja:</span>
-          <span id="mod-version" class="info-value">Ładowanie...</span>
+      <aside>
+        <div class="sidebar-widget">
+          <h3 class="widget-title">Compatibility</h3>
+          
+          <div style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 6px;">Minecraft: Java Edition</div>
+          <div class="badge-grid">
+            <span class="badge">1.21.x</span>
+            <span class="badge">1.20.x</span>
+            <span class="badge">1.19.x</span>
+            <span class="badge">1.18.2</span>
+          </div>
+
+          <div style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 6px;">Platforms</div>
+          <div class="badge-grid">
+            <span class="badge platform">Fabric</span>
+            <span class="badge platform">Forge</span>
+            <span class="badge platform">NeoForge</span>
+          </div>
+
+          <div style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 6px;">Supported environments</div>
+          <div class="badge-grid">
+            <span class="badge env">Client-side</span>
+          </div>
         </div>
-        <div class="info-item">
-          <span class="info-label">Pobrania (.jar):</span>
-          <span id="download-count" class="info-value">Ładowanie...</span>
+
+        <div class="sidebar-widget">
+          <h3 class="widget-title">Podepnij plik .jar</h3>
+          <div class="download-box">
+            <h4 id="file-status" style="color:#aaa;">Brak pliku .jar</h4>
+            <p id="file-name-display" style="font-size: 0.75rem; color: var(--text-muted);">Wybierz plik z dysku, aby go udostępnić</p>
+            
+            <label for="jar-upload" class="custom-file-btn">📁 Wybierz plik z dysku</label>
+            <input type="file" id="jar-upload" accept=".jar">
+          </div>
         </div>
-        <div class="info-item">
-          <span class="info-label">Licencja:</span>
-          <span class="info-value">MIT</span>
-        </div>
-      </div>
-    </aside>
+      </aside>
+
+    </div>
   </div>
 
-  <!-- Skrypt automatycznie pobierający dane z GitHub API -->
   <script>
-    const USER = 'TWOJ-NICK';
-    const REPO = 'NAZWA-REPOZYTORIUM';
+    const fileInput = document.getElementById('jar-upload');
+    const mainDownloadBtn = document.getElementById('main-download-btn');
+    const fileStatus = document.getElementById('file-status');
+    const fileNameDisplay = document.getElementById('file-name-display');
 
-    async function fetchReleaseData() {
-      try {
-        const response = await fetch(`https://api.github.com/repos/${USER}/${REPO}/releases/latest`);
-        const data = await response.json();
-
-        if (data.assets && data.assets.length > 0) {
-          // Znajdź plik z rozszerzeniem .jar
-          const jarAsset = data.assets.find(asset => asset.name.endsWith('.jar')) || data.assets[0];
-
-          document.getElementById('download-btn').href = jarAsset.browser_download_url;
-          document.getElementById('mod-version').innerText = data.tag_name;
-          document.getElementById('download-count').innerText = jarAsset.download_count.toLocaleString();
-        } else {
-          document.getElementById('mod-version').innerText = data.tag_name || 'Brak pliku';
-          document.getElementById('download-btn').innerText = 'Zobacz na GitHub';
-          document.getElementById('download-btn').href = data.html_url;
-        }
-      } catch (error) {
-        console.error('Błąd pobierania danych:', error);
-        document.getElementById('mod-version').innerText = 'Błąd API';
+    fileInput.addEventListener('change', function(e) {
+      const file = e.target.files[0];
+      if (file) {
+        const fileUrl = URL.createObjectURL(file);
+        mainDownloadBtn.href = fileUrl;
+        mainDownloadBtn.download = file.name;
+        
+        fileStatus.innerText = '✅ Plik podpięty!';
+        fileStatus.style.color = '#1bd96a';
+        fileNameDisplay.innerText = file.name;
       }
-    }
-
-    fetchReleaseData();
+    });
   </script>
 </body>
 </html>
