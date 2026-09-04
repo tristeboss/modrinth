@@ -1,102 +1,167 @@
+/* ==========================================
+   1. VARIABLES & CORE SETTINGS
+   ========================================== */
 :root {
-  --bg-color: #111213;
-  --card-bg: #18191c;
-  --border-color: #2e3035;
-  --text-primary: #d1d5db;
-  --text-secondary: #9ca3af;
-  --accent-color: #1bd96a;
-  --accent-hover: #15b758;
+  --ease-out-expo: cubic-bezier(.16, 1, .3, 1);
 }
 
-body {
-  background-color: var(--bg-color);
-  color: var(--text-primary);
-  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-  margin: 0;
-  padding: 40px 20px;
-}
-
-.container {
-  max-width: 1100px;
-  margin: 0 auto;
-  display: grid;
-  grid-template-columns: 1fr 320px;
-  gap: 24px;
-}
-
-@media (max-width: 768px) {
-  .container {
-    grid-template-columns: 1fr;
+/* ==========================================
+   2. TRANSITIONS & ANIMATIONS
+   ========================================== */
+@media (prefers-reduced-motion: no-preference) {
+  html.theme-color-transitioning ::-moz-placeholder {
+    animation: none !important;
+    animation-delay: 0s !important;
+    transition: color, background-color, border-color, outline-color, fill, stroke, box-shadow, text-decoration-color, caret-color, column-rule-color 125ms ease-in-out !important;
+    transition-delay: 0s !important;
+  }
+  html.theme-color-transitioning *,
+  html.theme-color-transitioning ::backdrop,
+  html.theme-color-transitioning ::placeholder,
+  html.theme-color-transitioning :after,
+  html.theme-color-transitioning :before {
+    animation: none !important;
+    animation-delay: 0s !important;
+    transition: color, background-color, border-color, outline-color, fill, stroke, box-shadow, text-decoration-color, caret-color, column-rule-color 125ms ease-in-out !important;
+    transition-delay: 0s !important;
+  }
+  html.theme-color-transitioning .floating-action-bar {
+    transition: color, background-color, border-color, outline-color, fill, stroke, box-shadow, text-decoration-color, caret-color, column-rule-color 125ms ease-in-out, transform .25s cubic-bezier(.15,1.4,.64,.96), opacity .25s cubic-bezier(.15,1.4,.64,.96), bottom .25s ease-in-out !important;
+    transition-delay: 0s !important;
+  }
+  html.theme-color-transitioning .floating-action-bar,
+  html.theme-color-transitioning .floating-action-bar *,
+  html.theme-color-transitioning .floating-action-bar :after,
+  html.theme-color-transitioning .floating-action-bar :before {
+    animation: revert !important;
+    animation-delay: revert !important;
   }
 }
 
-.main-content, .sidebar {
-  background: var(--card-bg);
-  border: 1px solid var(--border-color);
-  border-radius: 12px;
-  padding: 24px;
+.floating-expand-enter-from,
+.floating-expand-leave-to {
+  opacity: 0;
+  scale: var(--floating-expand-x, .9) var(--floating-expand-y, .3);
 }
 
-.mod-header {
-  display: flex;
-  align-items: center;
-  gap: 16px;
-  margin-bottom: 24px;
+.floating-expand-enter-to,
+.floating-expand-leave-from {
+  opacity: 1;
+  scale: 1 1;
 }
 
-.mod-icon {
-  width: 64px;
-  height: 64px;
-  border-radius: 8px;
-  object-fit: cover;
+.floating-expand-enter-active,
+.floating-expand-leave-active {
+  transform-origin: var(--floating-expand-origin, top);
+  transition: opacity .125s var(--ease-out-expo), scale .125s var(--ease-out-expo);
 }
 
-.mod-title {
-  margin: 0;
-  font-size: 1.8rem;
-  color: #fff;
+@keyframes pulse {
+  50% { opacity: .5; }
 }
 
-.mod-summary {
-  margin: 4px 0 0 0;
-  color: var(--text-secondary);
+.animate-pulse {
+  animation: pulse 2s cubic-bezier(.4, 0, .6, 1) infinite;
 }
 
-.btn-download {
-  display: block;
-  background-color: var(--accent-color);
-  color: #000;
-  font-weight: 700;
-  text-align: center;
-  padding: 14px;
-  border-radius: 8px;
-  text-decoration: none;
-  font-size: 1.1rem;
-  transition: background-color 0.2s;
+@keyframes spin {
+  to { transform: rotate(1turn); }
 }
 
-.btn-download:hover {
-  background-color: var(--accent-hover);
+.animate-spin {
+  animation: spin 1s linear infinite;
 }
 
-.info-group {
-  margin-top: 20px;
-  border-top: 1px solid var(--border-color);
-  padding-top: 16px;
+/* ==========================================
+   3. COMPONENTS
+   ========================================== */
+.button-menu-item[data-tone]:not([data-hover-filled-only]),
+.button-menu-item[data-tone]:not([data-hover-filled-only]) svg {
+  color: var(--button-menu-item-tone);
 }
 
-.info-item {
-  display: flex;
-  justify-content: space-between;
-  margin-bottom: 12px;
-  font-size: 0.95rem;
+.button-menu-item[data-tone][data-hover-filled]:focus-visible,
+.button-menu-item[data-tone][data-hover-filled]:hover {
+  background-color: var(--button-menu-item-tone);
+  color: var(--color-accent-contrast);
 }
 
-.info-label {
-  color: var(--text-secondary);
+.button-menu-item[data-tone][data-hover-filled]:focus-visible svg,
+.button-menu-item[data-tone][data-hover-filled]:hover svg {
+  color: inherit;
 }
 
-.info-value {
-  font-weight: 600;
-  color: #fff;
+.button-menu-trailing {
+  color: var(--button-menu-trailing-color, var(--color-secondary));
 }
+
+.button-menu-trailing:focus-visible,
+.button-menu-trailing:hover {
+  color: var(--color-accent-contrast);
+}
+
+.button-menu-trailing:focus-visible:before,
+.button-menu-trailing:hover:before {
+  background-color: var(--button-menu-trailing-color, var(--color-secondary));
+}
+
+/* ==========================================
+   4. TAILWIND UTILITIES & RESET
+   ========================================== */
+*, :after, :before, ::backdrop {
+  --tw-border-spacing-x: 0;
+  --tw-border-spacing-y: 0;
+  --tw-translate-x: 0;
+  --tw-translate-y: 0;
+  --tw-rotate: 0;
+  --tw-skew-x: 0;
+  --tw-skew-y: 0;
+  --tw-scale-x: 1;
+  --tw-scale-y: 1;
+  --tw-ring-offset-width: 0px;
+  --tw-ring-offset-color: #fff;
+  --tw-ring-color: rgba(147,197,253,.5);
+  --tw-ring-offset-shadow: 0 0 #0000;
+  --tw-ring-shadow: 0 0 #0000;
+  --tw-shadow: 0 0 #0000;
+  --tw-shadow-colored: 0 0 #0000;
+}
+
+/* Container & Layout Classes */
+.container, .\!container { width: 100%; }
+@media (min-width: 640px)  { .container, .\!container { max-width: 640px !important; } }
+@media (min-width: 768px)  { .container, .\!container { max-width: 768px !important; } }
+@media (min-width: 1024px) { .container, .\!container { max-width: 1024px !important; } }
+@media (min-width: 1280px) { .container, .\!container { max-width: 1280px !important; } }
+@media (min-width: 1536px) { .container, .\!container { max-width: 1536px !important; } }
+
+/* Helper Utilities */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
+
+.pointer-events-none { pointer-events: none; }
+.pointer-events-auto { pointer-events: auto; }
+.visible   { visibility: visible; }
+.invisible { visibility: hidden; }
+.collapse  { visibility: collapse; }
+
+.static   { position: static; }
+.fixed    { position: fixed; }
+.absolute, .\!absolute { position: absolute !important; }
+.relative { position: relative; }
+.sticky   { position: sticky; }
+
+.flex  { display: flex; }
+.grid  { display: grid; }
+.block { display: block; }
+.inline-block { display: inline-block; }
+.hidden { display: none; }
